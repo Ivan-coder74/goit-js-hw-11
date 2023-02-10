@@ -1,4 +1,4 @@
-import { fetchImages } from '../js/fetchImages';
+import { fetchImages } from './fetchImages';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
@@ -9,15 +9,6 @@ const gallery = document.querySelector('.gallery');
 const btnLoadMore = document.querySelector('.load-more');
 let gallerySimpleLightbox = new SimpleLightbox('.gallery a');
 
-// const { height: cardHeight } = document
-//   .querySelector('.gallery')
-//   .firstElementChild.getBoundingClientRect();
-
-// window.scrollBy({
-//   top: cardHeight * 2,
-
-//   behavior: 'smooth',
-// });
 
 btnLoadMore.style.display = 'none';
 
@@ -38,7 +29,10 @@ btnSearch.addEventListener('click', e => {
         Notiflix.Notify.success(
           `Hooray! We found ${foundData.totalHits} images.`
         );
-        btnLoadMore.style.display = 'block';
+        if (foundData.totalHits > foundData.hits.length * pageNumber) {
+          btnLoadMore.style.display = 'block';
+        }
+        // btnLoadMore.style.display = 'block';
         gallerySimpleLightbox.refresh();
       }
     });
@@ -57,9 +51,12 @@ btnLoadMore.addEventListener('click', () => {
     } else {
       renderImageList(foundData.hits);
       Notiflix.Notify.success(
-        `Hooray! We found ${foundData.totalHits} images.`
+        `Hooray!We found ${foundData.totalHits} images.`
       );
-      btnLoadMore.style.display = 'block';
+       if (foundData.totalHits > foundData.hits.length * pageNumber) {
+         btnLoadMore.style.display = 'block';
+       }
+  
     }
   });
 });
